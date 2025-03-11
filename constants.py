@@ -2,7 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
-OPTIONS_PATH = os.path.join(TEMPLATE_DIR, "options.json")
+# OPTIONS_PATH = os.path.join(TEMPLATE_DIR, "options.json")
 FONT_DIR = os.path.join(BASE_DIR, "fonts")
 TRAYS_DIR = os.path.join(BASE_DIR, "trays")
 

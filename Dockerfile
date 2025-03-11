@@ -1,5 +1,5 @@
 # Use official Python slim base image
-FROM python:3.9-slim
+FROM python:3.13-slim
 
 # Set working directory
 WORKDIR /app
@@ -8,9 +8,8 @@ WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    wkhtmltopdf \
-    fontconfig \
+RUN apt update && apt install -y \
+    libpango1.0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file
@@ -19,13 +18,16 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code and templates
+# Copy application code
 COPY main.py .
 COPY report_logger.py .
-COPY templates/ templates/
+COPY utils.py .
+COPY constants.py .
 
-# Create logs directory
+# Create directories for logs, templates, and trays
 RUN mkdir -p logs
+RUN mkdir -p templates
+RUN mkdir -p trays
 
 # Expose port
 EXPOSE 8000

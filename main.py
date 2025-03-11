@@ -15,7 +15,7 @@ import base64
 from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
 from utils import RecursiveNamespace, TemplateInstance
-from constants import TEMPLATE_DIR, OPTIONS_PATH, FONT_DIR, TRAYS_DIR
+from constants import TEMPLATE_DIR, FONT_DIR, TRAYS_DIR
 
 
 def get_available_templates():
@@ -26,7 +26,7 @@ def get_available_templates():
 async def lifespan(app: FastAPI):
     # @app.on_event("startup")
     logger.info("Starting up report generation API")
-    for path in [OPTIONS_PATH, FONT_DIR]:
+    for path in [FONT_DIR]:
         if not os.path.exists(path):
             logger.error(f"Required file not found: {path}")
             raise RuntimeError(f"Required file not found: {path}")
@@ -42,14 +42,6 @@ app = FastAPI(lifespan=lifespan)
 
 # Jinja2 environment setup
 template_env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
-
-# Load PDF options
-try:
-    with open(OPTIONS_PATH, 'r') as f:
-        PDF_OPTIONS = json.load(f)
-except Exception as e:
-    logger.error(f"Failed to load PDF options: {e}")
-    raise
 
 class ReportData(BaseModel):
     content: dict
